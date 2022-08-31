@@ -1,0 +1,32 @@
+{
+    "name": "@dpos-info/core-fireplace",
+    "description": "Automated Burn Transactions for the Solar Blockchain",
+    "homepage": "https://github.com/dpos-info/solar-fireplace",
+    "version": "1.0.0",
+    "author": "Edgar Goetzendorff <contact@dpos.info>",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "files": [
+        "dist/"
+    ],
+    "scripts": {
+        "build": "pnpm clean && tsc",
+        "build:watch": "pnpm clean && pnpm compile -w",
+        "clean": "rimraf dist",
+        "compile": "node ../../node_modules/typescript/bin/tsc",
+        "lint": "../../node_modules/eslint/bin/eslint.js . --ext .ts --fix",
+        "prettier": "prettier --write './**/*.{ts,js,json,md}'",
+        "format": "pnpm lint && pnpm prettier"
+    },
+    "devDependencies": {
+        "@solar-network/crypto": "workspace:*",
+        "@solar-network/kernel": "workspace:*"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4,
+        "trailingComma": "all",
+        "useTabs": false
+    }
+}
