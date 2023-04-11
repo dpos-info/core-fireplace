@@ -1,6 +1,6 @@
-# Solar Fireplace
+# Solar Core Fireplace
 
-This repository contains the **Solar Fireplace** plugin.
+This repository contains the **Core Fireplace** plugin.
 
 ## Credits
 

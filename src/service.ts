@@ -25,9 +25,14 @@ export class Fireplace {
     private address!: string;
     private passphrase!: string;
 
+    private dust!: Utils.BigNumber;
+
     public async boot(): Promise<void> {
         this.passphrase = this.configuration.get("passphrase")!;
         this.address = Identities.Address.fromPassphrase(this.passphrase);
+
+        // TODO check for outstanding transactions instead of blindly taking the balance
+        this.dust = this.walletRepository.findByAddress(this.address).getBalance();
 
         this.events.listen(AppEnums.BlockEvent.Applied, {
             handle: () => (this.nonce = undefined),
@@ -62,6 +67,25 @@ export class Fireplace {
                     minimumBurnAmount,
                 )})`,
             );
+
+            this.dust = this.dust.plus(amount);
+
+            if (this.dust.isGreaterThanEqual(minimumBurnAmount)) {
+                this.nonce = this.nonce ? this.nonce.plus(1) : senderWallet.getNonce().plus(1);
+
+                const transaction = Transactions.BuilderFactory.burn()
+                    .amount(this.dust.toString())
+                    .memo("dust")
+                    .nonce(this.nonce.toString())
+                    .sign(this.passphrase)
+                    .build();
+
+                this.log(`broadcasting burn transaction for accumulated dust (${Utils.formatSatoshi(this.dust)})`);
+
+                await this.transactionBroadcaster.broadcastTransactions([transaction]);
+
+                this.dust = Utils.BigNumber.ZERO;
+            }
 
             return;
         }

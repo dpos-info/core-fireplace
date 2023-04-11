@@ -1,7 +1,7 @@
 {
     "name": "@dpos-info/core-fireplace",
     "description": "Automated Burn Transactions for the Solar Blockchain",
-    "homepage": "https://github.com/dpos-info/solar-fireplace",
+    "homepage": "https://github.com/dpos-info/core-fireplace",
     "version": "1.0.0",
     "author": "Edgar Goetzendorff <contact@dpos.info>",
     "license": "MIT",
