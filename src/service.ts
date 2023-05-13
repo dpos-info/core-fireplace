@@ -44,7 +44,15 @@ export class Fireplace {
     }
 
     private async burn({ data }: { data: Interfaces.ITransactionData }): Promise<void> {
-        const transfers = data.asset?.transfers?.filter((item) => item.recipientId === this.address);
+        const transfers =
+            data.recipientId === this.address
+                ? [
+                      {
+                          amount: data.amount,
+                          recipientId: data.recipientId,
+                      },
+                  ]
+                : data.asset?.transfers?.filter((item) => item.recipientId === this.address);
 
         if (!transfers || transfers.length === 0) {
             return;
